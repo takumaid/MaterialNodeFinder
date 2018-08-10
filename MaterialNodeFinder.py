@@ -27,6 +27,13 @@ class Button(bpy.types.Operator):
             if mat.use_nodes:
                 for mnod in mat.node_tree.nodes:
                     if mnod.type == 'GROUP':
+                        for gnod in mnod.node_tree.nodes:
+                            if gnod.type == 'MATERIAL':
+                                if gnod.material.name == searchname:
+                                    bpy.types.Scene.my_list.append(['MATERIAL_DATA',gnod.name+' in '+ mnod.node_tree.name])
+                            elif gnod.type == 'TEXTURE':
+                                if gnod.texture.name == searchname:
+                                    bpy.types.Scene.my_list.append(['TEXTURE',gnod.name+' in '+ mnod.node_tree.name])
                         if mnod.node_tree.name == searchname:
                             bpy.types.Scene.my_list.append(['NODETREE',mat.name])
                     elif mnod.type == 'MATERIAL':
