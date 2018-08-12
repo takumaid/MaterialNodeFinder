@@ -5,14 +5,14 @@ class UI(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     
-    bpy.types.Scene.my_string = bpy.props.StringProperty(name='string')
+    bpy.types.Scene.my_string = bpy.props.StringProperty(name='search for')
     bpy.types.Scene.my_list = []
     
     def draw(self,context):
         self.layout.prop(context.scene, "my_string")
         self.layout.operator("mnf.button")
         for l in bpy.types.Scene.my_list:
-            self.layout.label(text='in '+l[1],icon=l[0])
+            self.layout.label(l[1],icon=l[0])
         
 class Button(bpy.types.Operator):
     bl_idname = "mnf.button"
@@ -29,19 +29,19 @@ class Button(bpy.types.Operator):
                     if mnod.type == 'GROUP':
                         for gnod in mnod.node_tree.nodes:
                             if gnod.type == 'MATERIAL':
-                                if gnod.material.name == searchname:
-                                    bpy.types.Scene.my_list.append(['MATERIAL_DATA',gnod.name+' in '+ mnod.node_tree.name])
+                                if  searchname in gnod.material.name:
+                                    bpy.types.Scene.my_list.append(['MATERIAL_DATA',gnod.material.name + ' : ' + ' Grouped in '+ mnod.node_tree.name])
                             elif gnod.type == 'TEXTURE':
-                                if gnod.texture.name == searchname:
-                                    bpy.types.Scene.my_list.append(['TEXTURE',gnod.name+' in '+ mnod.node_tree.name])
-                        if mnod.node_tree.name == searchname:
-                            bpy.types.Scene.my_list.append(['NODETREE',mat.name])
+                                if searchname in gnod.texture.name:
+                                    bpy.types.Scene.my_list.append(['TEXTURE',gnod.texture.name + ' : Grouped in ' + mnod.node_tree.name])
+                        if searchname in mnod.node_tree.name:
+                            bpy.types.Scene.my_list.append(['NODETREE',mnod.node_tree.name + ' : in ' + mat.name])
                     elif mnod.type == 'MATERIAL':
-                        if mnod.material.name == searchname:
-                            bpy.types.Scene.my_list.append(['MATERIAL_DATA',mat.name])
+                        if searchname in mnod.material.name:
+                            bpy.types.Scene.my_list.append(['MATERIAL_DATA',mnod.material.name + ' : in ' + mat.name])
                     elif mnod.type == 'TEXTURE':
-                         if mnod.texture.name == searchname:
-                            bpy.types.Scene.my_list.append(['TEXTURE',mat.name])
+                         if searchname in mnod.texture.name:
+                            bpy.types.Scene.my_list.append(['TEXTURE',mnod.texture.name + ' : in ' + mat.name])
                             
         return{'FINISHED'}
         
