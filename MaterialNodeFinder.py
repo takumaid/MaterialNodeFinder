@@ -1,6 +1,6 @@
 import bpy
 
-class UI(bpy.types.Panel):
+class HMD_PD_mnfUI(bpy.types.Panel):
     bl_label = "MaterialNodeFinder"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -12,9 +12,9 @@ class UI(bpy.types.Panel):
         self.layout.prop(context.scene, "my_string")
         self.layout.operator("mnf.button")
         for l in bpy.types.Scene.my_list:
-            self.layout.label(l[1],icon=l[0])
+            self.layout.label(text = l[1],icon=l[0])
         
-class Button(bpy.types.Operator):
+class HMD_OT_mfButton(bpy.types.Operator):
     bl_idname = "mnf.button"
     bl_label = "Find"
 
@@ -46,19 +46,11 @@ class Button(bpy.types.Operator):
         return{'FINISHED'}
         
 classes = (
-    UI,
-    Button
+    HMD_PD_mnfUI,
+    HMD_OT_mfButton
 )
 
-def register():
-    from bpy.utils import register_class
-    for cls in classes:
-        register_class(cls)
-
-def unregister():
-    from bpy.utils import unregister_class
-    for cls in reversed(classes):
-        register_class(cls)
+register, unregister = bpy.utils.register_classes_factory(classes)
 
 if __name__ == "__main__":
     register()
