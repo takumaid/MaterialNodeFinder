@@ -2,6 +2,7 @@ import bpy
 
 class HMD_PD_mnfUI(bpy.types.Panel):
     bl_label = "MaterialNodeFinder"
+    bl_category = "MatFinder"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     
